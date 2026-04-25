@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import DetailProduk from "../../views/DetailProduct";
 import { ProductType } from "../../types/product.type";
+import { retrieveDataByID } from "../../utils/db/servicefirebase";
 
 const HalamanProduk = ({ product }: { product: ProductType }) => {
   // {/digunakan client-side rendering/}
@@ -19,12 +20,11 @@ export default HalamanProduk;
 
 // {/digunakan server-side rendering/}
 export async function getServerSideProps({ params }: { params: { produk: string } }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/produk/${params?.produk}`);
-  const respone = await res.json();
-  // console.log("Data produk yang diambil dari API:", respone);
+  const product = await retrieveDataByID("products", params?.produk);
+  
   return {
     props: {
-      product: respone.data, // Pastikan untuk memberikan nilai default jika data tidak tersedia
+      product: product || null, // Pastikan untuk memberikan nilai default jika data tidak tersedia
     },
   };
 }

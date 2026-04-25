@@ -10,7 +10,7 @@ const requireAuth = [
 ];
 
 export default withAuth(
-  async function middleware(req: NextRequest, next: NextFetchEvent) {
+  async function proxy(req: NextRequest, next: NextFetchEvent) {
     return NextResponse.next();
   },
   requireAuth
